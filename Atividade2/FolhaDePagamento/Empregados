@@ -1,0 +1,80 @@
+package FolhaDePagamento;
+import java.util.Date;
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class Empregados {
+    String nome;
+    String endereco;
+    String dataNascimento;
+    int id;
+    String tipoEmp;
+    double salario;
+    String historicoComissao = "";
+    
+    java.util.Date datePagamento;
+    
+    public void addEmpregado(String nome,String endereco, String dataNascimento,int id, String tipoEmp){
+        this.nome = nome;
+        this.endereco = endereco;
+        this.dataNascimento = dataNascimento;
+        this.id = id;
+        this.tipoEmp = tipoEmp;
+        
+        if(tipoEmp == "Assalariado" || tipoEmp == "Assalariado"){
+            empAssalariado();
+        }
+        else if (tipoEmp == "Horista" || tipoEmp == "horista"){
+            empHorista();
+        }
+    }
+    public void removerEmpregado(Empregados [] empregados, int clean){
+        int count=0;
+        for (Empregados perc : empregados){
+            if (perc.id == clean){
+            empregados[count] = null;
+            break;
+            }
+            count++;
+        }
+    }
+    public void alterarCadastro(){
+        
+    }
+    
+    public void Comissao(Empregados [] empregados, double valueVenda, String dateVenda,int id){
+        int count = 0;
+        for(Empregados perc : empregados){
+            if(perc.id == id){
+                double valueComissao = (.1 * valueVenda);
+                empregados[count].salario *= valueComissao; // Calculo comissao
+                empregados[count].historicoComissao += "data da venda: "+dateVenda+"\nvalor venda: "+
+                                        valueVenda+"\nComissao recebida: "+valueComissao+"\n";
+                return;
+            }
+            count++;
+        }
+        System.out.println("id de usuario não encontrado");
+    }
+    
+    public void consultarVendas(Empregados [] empregados, int id){
+        int count = 0;
+        for(Empregados perc : empregados){
+            if(perc.id == id){
+                System.out.println("nome: "+empregados[count].nome+"\n ----Vendas:---- \n\n"+
+                                    empregados[count].historicoComissao+"\n");
+                return;
+            }
+            count++;
+        }
+        System.out.println("id de usuario não encontrado");
+    }
+    
+    public void empHorista(){
+        this.salario = 0;
+    }
+    public void empAssalariado(){
+        this.salario = 20.000;
+    }
+}
