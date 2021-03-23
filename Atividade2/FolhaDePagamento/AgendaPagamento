@@ -1,0 +1,19 @@
+package FolhaDePagamento;
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class AgendaPagamento {
+    Empregados [] empregados;
+    
+    public static void criarAgenda(){
+        
+    }
+    public static void excluirAgenda(){
+        
+    }
+    public static void verificarPagDiario(java.util.Date date){
+        
+    }
+}
