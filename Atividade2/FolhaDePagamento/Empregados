@@ -10,8 +10,6 @@ public class Empregados {
     String dataNascimento;
     int id;
     String tipoEmp;
-    double salario;
-    String historicoComissao = "";
     
     java.util.Date datePagamento;
     
@@ -22,59 +20,94 @@ public class Empregados {
         this.id = id;
         this.tipoEmp = tipoEmp;
         
-        if(tipoEmp == "Assalariado" || tipoEmp == "Assalariado"){
-            empAssalariado();
-        }
-        else if (tipoEmp == "Horista" || tipoEmp == "horista"){
-            empHorista();
-        }
     }
-    public void removerEmpregado(Empregados [] empregados, int clean){
-        int count=0;
-        for (Empregados perc : empregados){
-            if (perc.id == clean){
-            empregados[count] = null;
-            break;
+    
+    public void removerEmpregado(AgendaPagamento agenda, int clean){
+        Scanner scan = new Scanner(System.in);
+        int count = 0;
+        
+        System.out.println("Digite o tipo de empregado: (Horista/Assalariado)");
+        String typeClean = scan.nextLine();
+        
+        if (typeClean.equals("Horista") || typeClean.equals("horista")){
+            for (EmpHorista perc : agenda.horista){
+                    if (perc == null) continue;
+                    if (perc.id == clean){
+                        agenda.horista[count] = null;
+                        return;
+                    }
+                    count++;
+                }
+                System.out.println("ID de usuário não encontrado");
+        }
+        
+        else if(typeClean.equals("Assalariado") || typeClean.equals("assalariado")){
+            
+            System.out.println("É comissionado? - Y para sim/ N para não");
+            String typeAssalariado = scan.nextLine();
+            
+        //    System.out.println(agenda.comissionado[1].nome);
+            
+            if(typeAssalariado.equals("Y") || typeAssalariado.equals("y")){
+                               
+                for (EmpComissionado perc : agenda.comissionado){
+                    if (perc == null){
+                        continue;
+                    }
+                    if (perc.id == clean){
+                        agenda.comissionado[count] = null;
+                        return;
+                    }
+                    count++;
+                }
+                System.out.println("ID de usuário não encontrado");
             }
-            count++;
+            else if(typeAssalariado.equals("N") || typeAssalariado.equals("n")){
+                
+                for (EmpAssalariado perc : agenda.assalariado){
+                    if (perc == null) continue;
+                    if (perc.id == clean){
+                        agenda.assalariado[count] = null;
+                        return;
+                    }
+                    count++;
+                }
+                System.out.println("ID de usuário não encontrado");
+            }
+            else{
+                System.out.println("Opção inválida");
+            }
+        }
+        
+        else{
+            System.out.println("Opção inválida");
         }
     }
+    
     public void alterarCadastro(){
         
     }
     
-    public void Comissao(Empregados [] empregados, double valueVenda, String dateVenda,int id){
-        int count = 0;
-        for(Empregados perc : empregados){
-            if(perc.id == id){
-                double valueComissao = (.1 * valueVenda);
-                empregados[count].salario *= valueComissao; // Calculo comissao
-                empregados[count].historicoComissao += "data da venda: "+dateVenda+"\nvalor venda: "+
-                                        valueVenda+"\nComissao recebida: "+valueComissao+"\n";
+    
+    public void consultarVendas(EmpComissionado [] empComissionado, int id){
+        for(EmpComissionado perc : empComissionado){
+            if(perc != null && perc.id == id){
+                EmpComissionado emp = (EmpComissionado) perc; //Cast
+                System.out.println("nome: "+perc.nome+"\n ----Vendas:---- \n\n"+
+                                    perc.historicoComissao+"\n");
                 return;
             }
-            count++;
         }
         System.out.println("id de usuario não encontrado");
     }
     
-    public void consultarVendas(Empregados [] empregados, int id){
-        int count = 0;
-        for(Empregados perc : empregados){
-            if(perc.id == id){
-                System.out.println("nome: "+empregados[count].nome+"\n ----Vendas:---- \n\n"+
-                                    empregados[count].historicoComissao+"\n");
-                return;
-            }
-            count++;
-        }
-        System.out.println("id de usuario não encontrado");
-    }
-    
-    public void empHorista(){
-        this.salario = 0;
-    }
-    public void empAssalariado(){
-        this.salario = 20.000;
+    public void printarEmpregados (Empregados [] empregados){
+        for (Empregados temp : empregados){
+            if(temp != null)
+
+            System.out.println("nome: "+temp.nome+"\nendereco: "+temp.endereco+
+            "\ndata nascimento: "+temp.dataNascimento+"\nid: "+temp.id+"\n");
+        }        
     }
 }
+
