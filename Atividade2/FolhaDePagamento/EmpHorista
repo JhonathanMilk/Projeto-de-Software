@@ -1,0 +1,13 @@
+package FolhaDePagamento;
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class EmpHorista extends Empregados{
+    double horasTrabalhadas;
+    
+    public void addHorista(double horasTrablhadas){       
+        this.horasTrabalhadas = horasTrabalhadas;
+    }
+}
