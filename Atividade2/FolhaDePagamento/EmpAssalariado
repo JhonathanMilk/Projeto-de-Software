@@ -1,0 +1,29 @@
+package FolhaDePagamento;
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class EmpAssalariado extends Empregados{
+    double salario;
+    boolean comissioned = false;
+    
+    public void addAssalariado(double salario){       
+        this.salario = salario;
+    }
+    
+    public void printarEmpregados (EmpAssalariado [] assalariado){
+         if (assalariado == null || assalariado.length == 0){
+            System.out.println("Nenhum empregado adicionado\n");
+            return;
+         }
+         for (EmpAssalariado temp : assalariado){
+
+         if(temp != null){
+             System.out.println("nome: "+temp.nome+"\nendereco: "+temp.endereco+
+             "\ndata nascimento: "+temp.dataNascimento+"\nid: "+temp.id+"\nTipo empregado: "+temp.tipoEmp+"\n"); 
+         }
+     }        
+ }
+    
+}
