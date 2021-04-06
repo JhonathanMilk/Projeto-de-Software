@@ -6,6 +6,9 @@ package FolhaDePagamento;
  */
 public class AgendaPagamento {
     Empregados [] empregados;
+    EmpAssalariado [] assalariado;
+    EmpComissionado [] comissionado;
+    EmpHorista [] horista;
     
     public static void criarAgenda(){
         
