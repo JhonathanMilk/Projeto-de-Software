@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package AtividadePS2;
+package FolhaDePagamento;
 import java.util.Scanner;
+import java.util.ArrayList;
 /**
  *
  * @author jhonathanmilk
@@ -15,14 +16,10 @@ public class Main {
        
        /**/
        AgendaPagamento agenda = new AgendaPagamento ();
-       EmpAssalariado [] empAssalariado = new EmpAssalariado[20];
-       EmpComissionado [] empComissionado = new EmpComissionado[20];
-       EmpHorista [] empHorista = new EmpHorista[20];
+       ArrayList <Empregados> empregados = new ArrayList <>();
+       agenda.empregados = empregados;
        
-       agenda.comissionado = empComissionado;
-       agenda.assalariado = empAssalariado;
-       agenda.horista = empHorista;
-       
+              
        int id = 0;
        int count = 0;
        
@@ -53,7 +50,6 @@ public class Main {
                 System.out.println("Digite o tipo de empregado: (Assalariado/Horista)");
                 String tipoEmpregado = scan.nextLine();
                 
-         //       Empregados empregado = new Empregados ();
                 if (tipoEmpregado.equals("Assalariado") || tipoEmpregado.equals("assalariado")){
                     
                     System.out.println("O empregado é comissionado? Pressione Y para sim / N para não");
@@ -61,21 +57,13 @@ public class Main {
                     
                     if (comissioned.equals("N") || comissioned.equals("n")){
                         
-                        EmpAssalariado assalariado = new EmpAssalariado ();
-                        assalariado.addEmpregado(nome,endereco,dataNascimento, id, tipoEmpregado);
-                        assalariado.addAssalariado(20000);
-                        empAssalariado[salariedCount] = assalariado;
-                        salariedCount++;
-                        
+                        EmpAssalariado assalariado = new EmpAssalariado (2000,nome,endereco,dataNascimento, id, tipoEmpregado);
+                        empregados.add(assalariado);                        
                     }                    
                     else if (comissioned.equals("Y") || comissioned.equals("y")){
                         
-                        EmpComissionado comissionado = new EmpComissionado ();
-                        comissionado.addEmpregado(nome,endereco,dataNascimento, id, tipoEmpregado);
-                        comissionado.addAssalariado(20000);
-                        empComissionado[comissionedCount] = comissionado;
-                        comissionedCount++;
-                        
+                        EmpComissionado comissionado = new EmpComissionado (0, 2000, nome, endereco, dataNascimento, id, tipoEmpregado);
+                        empregados.add(comissionado);                        
                     }
                     else{
                         System.out.println("Opcao invalida");
@@ -83,11 +71,8 @@ public class Main {
                     
                 }
                 else if (tipoEmpregado.equals("Horista") || tipoEmpregado.equals("horista")){
-                    EmpHorista horista = new EmpHorista ();
-                    horista.addEmpregado(nome,endereco,dataNascimento, id, tipoEmpregado);
-                    horista.addHorista(0);
-                    empHorista[horistaCount] = horista;
-                    horistaCount++;
+                    EmpHorista horista = new EmpHorista (0, nome, endereco, dataNascimento, id, tipoEmpregado);
+                    empregados.add(horista);
                 }
                 else{
                     System.out.println("Tipo de empregado inválido");
@@ -97,29 +82,37 @@ public class Main {
             
             else if (entrada == 2){
                 /*Funcao remover*/
-                System.out.println("Digite o id do empregado que deseja remover");
+                
+                if(empregados.isEmpty()){
+                    System.out.println("Lista de empregados vazia, por favor adicionar empregados!");
+                    continue;
+                }
+                
+                System.out.println("Digite o id do empregado que deseja remover:");
                 int clean = scan.nextInt();
+                boolean verifica = false;
+                int i=0;
                 
-                Empregados temp = new Empregados ();
+                for(Empregados search : empregados){
+     //               System.out.println(i);
+                    if(search.getId() == clean){
+                        verifica = true;
+                        break;
+                    }
+                    i++;
+                }
                 
-                
-                temp.removerEmpregado(agenda, clean);
-                
+                if(verifica){
+                    empregados.remove(i);
+                }else{
+                    System.out.println("Empregado nao localizado");
+                }                                        
             }
+            
             else if (entrada == 3){ //Funçao visualizar empregados
-                
-                System.out.println("Empregados Horistas:\n");
-                
-                System.out.println("Empregados Assalariados:\n");
-
-                EmpAssalariado imprimirAssalariado = new EmpAssalariado();
-                imprimirAssalariado.printarEmpregados(empAssalariado);  
-                
-                System.out.println("Empregados Assalariados Comissionados:\n");
-
-                EmpComissionado imprimirComissionado = new EmpComissionado();
-                imprimirComissionado.printarEmpregados(empComissionado);
-                              
+                for(Empregados print : empregados){
+                    System.out.println(print);
+                }                            
             }
             
             else if (entrada == 4){
@@ -136,18 +129,16 @@ public class Main {
                 System.out.println("Digite seu id:");
                 int idVendedor = scan.nextInt();
                 
-                
-                EmpComissionado vendaComissao = new EmpComissionado();
-                
-                vendaComissao.Comissao(empComissionado, valueVenda, dateVenda, idVendedor);                                               
+                EmpComissionado addComissao = new EmpComissionado();
+                addComissao.Comissao(empregados, valueVenda, dateVenda, idVendedor);
             }
             
             else if (entrada == 6){ //verificar historico de vendas;
                 System.out.println("Digite o id do usuario: ");
                 int idUser = scan.nextInt();
                 
-                EmpComissionado buscarComissao = new EmpComissionado();
-                buscarComissao.consultarVendas(empComissionado, idUser);
+
+                
             }
             else if (entrada == 8){
                 break;
