@@ -5,9 +5,26 @@ package FolhaDePagamento;
  * @author jhonathanmilk
  */
 public class EmpHorista extends Empregados{
-    double horasTrabalhadas;
-    
-    public void addHorista(double horasTrablhadas){       
+    private double horasTrabalhadas;
+
+    public EmpHorista(double horasTrabalhadas, String nome, String endereco, String dataNascimento, int id, String tipoEmp) {
+        super(nome, endereco, dataNascimento, id, tipoEmp);
         this.horasTrabalhadas = horasTrabalhadas;
     }
+
+    public double getHorasTrabalhadas() {
+        return horasTrabalhadas;
+    }
+
+    public void setHorasTrabalhadas(double horasTrabalhadas) {
+        this.horasTrabalhadas = horasTrabalhadas;
+    }
+    
+    @Override
+    public String toString(){
+        System.out.println(super.toString());
+        return "Horas trabalhadas: "+horasTrabalhadas+"\n";
+    }
+        
 }
+
