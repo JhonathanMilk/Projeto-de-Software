@@ -1,88 +1,78 @@
 package FolhaDePagamento;
+
 import java.util.Date;
+import java.util.Scanner;
 /**
  *
  * @author jhonathanmilk
  */
 public class Empregados {
-    String nome;
-    String endereco;
-    String dataNascimento;
-    int id;
-    String tipoEmp;
+    private String nome;
+    private String endereco;
+    private String dataNascimento;
+    private int id;
+    private String tipoEmp;
     
-    java.util.Date datePagamento;
-    
-    public void addEmpregado(String nome,String endereco, String dataNascimento,int id, String tipoEmp){
+    public Empregados() {
+        
+    }
+
+    public Empregados(String nome, String endereco, String dataNascimento, int id, String tipoEmp) {
         this.nome = nome;
         this.endereco = endereco;
         this.dataNascimento = dataNascimento;
         this.id = id;
         this.tipoEmp = tipoEmp;
-        
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(String dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTipoEmp() {
+        return tipoEmp;
+    }
+
+    public void setTipoEmp(String tipoEmp) {
+        this.tipoEmp = tipoEmp;
+    }
+    
+    @Override
+    public String toString(){
+        return "Nome: "+nome+"\nid: "+id+"\nEndereço: "+endereco+"Data nasc: "+dataNascimento;
     }
     
     public void removerEmpregado(AgendaPagamento agenda, int clean){
-        Scanner scan = new Scanner(System.in);
-        int count = 0;
-        
-        System.out.println("Digite o tipo de empregado: (Horista/Assalariado)");
-        String typeClean = scan.nextLine();
-        
-        if (typeClean.equals("Horista") || typeClean.equals("horista")){
-            for (EmpHorista perc : agenda.horista){
-                    if (perc == null) continue;
-                    if (perc.id == clean){
-                        agenda.horista[count] = null;
-                        return;
-                    }
-                    count++;
-                }
-                System.out.println("ID de usuário não encontrado");
         }
         
-        else if(typeClean.equals("Assalariado") || typeClean.equals("assalariado")){
-            
-            System.out.println("É comissionado? - Y para sim/ N para não");
-            String typeAssalariado = scan.nextLine();
-            
-        //    System.out.println(agenda.comissionado[1].nome);
-            
-            if(typeAssalariado.equals("Y") || typeAssalariado.equals("y")){
-                               
-                for (EmpComissionado perc : agenda.comissionado){
-                    if (perc == null){
-                        continue;
-                    }
-                    if (perc.id == clean){
-                        agenda.comissionado[count] = null;
-                        return;
-                    }
-                    count++;
-                }
-                System.out.println("ID de usuário não encontrado");
-            }
-            else if(typeAssalariado.equals("N") || typeAssalariado.equals("n")){
-                
-                for (EmpAssalariado perc : agenda.assalariado){
-                    if (perc == null) continue;
-                    if (perc.id == clean){
-                        agenda.assalariado[count] = null;
-                        return;
-                    }
-                    count++;
-                }
-                System.out.println("ID de usuário não encontrado");
-            }
-            else{
-                System.out.println("Opção inválida");
-            }
-        }
-        
-        else{
-            System.out.println("Opção inválida");
-        }
-    }
     
     public void alterarCadastro(){
         
@@ -90,24 +80,10 @@ public class Empregados {
     
     
     public void consultarVendas(EmpComissionado [] empComissionado, int id){
-        for(EmpComissionado perc : empComissionado){
-            if(perc != null && perc.id == id){
-                EmpComissionado emp = (EmpComissionado) perc; //Cast
-                System.out.println("nome: "+perc.nome+"\n ----Vendas:---- \n\n"+
-                                    perc.historicoComissao+"\n");
-                return;
-            }
-        }
-        System.out.println("id de usuario não encontrado");
+
     }
     
-    public void printarEmpregados (Empregados [] empregados){
-        for (Empregados temp : empregados){
-            if(temp != null)
+    public void printarEmpregados (){
 
-            System.out.println("nome: "+temp.nome+"\nendereco: "+temp.endereco+
-            "\ndata nascimento: "+temp.dataNascimento+"\nid: "+temp.id+"\n");
-        }        
     }
 }
-
