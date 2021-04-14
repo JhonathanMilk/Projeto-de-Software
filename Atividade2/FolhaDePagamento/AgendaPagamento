@@ -1,14 +1,13 @@
 package FolhaDePagamento;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author jhonathanmilk
  */
 public class AgendaPagamento {
-    Empregados [] empregados;
-    EmpAssalariado [] assalariado;
-    EmpComissionado [] comissionado;
-    EmpHorista [] horista;
+    ArrayList<Empregados> empregados;
     
     public static void criarAgenda(){
         
@@ -20,3 +19,4 @@ public class AgendaPagamento {
         
     }
 }
+
