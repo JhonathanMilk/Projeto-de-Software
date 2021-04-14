@@ -5,25 +5,48 @@ package FolhaDePagamento;
  * @author jhonathanmilk
  */
 public class EmpAssalariado extends Empregados{
-    double salario;
-    boolean comissioned = false;
+    private double salario;
+    private boolean comissioned = false;
+
+    public EmpAssalariado() {
+        
+    }
+
+    public EmpAssalariado(double salario, String nome, String endereco, String dataNascimento, int id, String tipoEmp) {
+        super(nome, endereco, dataNascimento, id, tipoEmp);
+        this.salario = salario;        
+    }
+
+    public double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
+
+    public boolean isComissioned() {
+        return comissioned;
+    }
+
+    public void setComissioned(boolean comissioned) {
+        this.comissioned = comissioned;
+    }
+    
     
     public void addAssalariado(double salario){       
         this.salario = salario;
     }
     
+    
+    @Override
+    public String toString(){
+        System.out.println(super.toString());
+        return "salario: "+salario+"\nComissionado: "+comissioned+"\n";
+    }
+    
     public void printarEmpregados (EmpAssalariado [] assalariado){
-         if (assalariado == null || assalariado.length == 0){
-            System.out.println("Nenhum empregado adicionado\n");
-            return;
-         }
-         for (EmpAssalariado temp : assalariado){
-
-         if(temp != null){
-             System.out.println("nome: "+temp.nome+"\nendereco: "+temp.endereco+
-             "\ndata nascimento: "+temp.dataNascimento+"\nid: "+temp.id+"\nTipo empregado: "+temp.tipoEmp+"\n"); 
-         }
-     }        
- }
+          
+    }
     
 }
