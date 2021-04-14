@@ -1,57 +1,53 @@
-package FolhaDePagamento;
+package FolhaDPagamento;
+import java.util.ArrayList;
 
 /**
  *
  * @author jhonathanmilk
  */
 public class EmpComissionado extends EmpAssalariado {
-    String historicoComissao = "";
-    double comissao;
+    private String historicoComissao = "";
+    private double comissao;
+
+    public EmpComissionado() {        
+    }
+
+    public EmpComissionado(double comissao, double salario, String nome, String endereco, String dataNascimento, int id, String tipoEmp) {
+        super(salario, nome, endereco, dataNascimento, id, tipoEmp);
+        super.setComissioned(true);
+        this.comissao = comissao;
+    }        
+
+    public String getHistoricoComissao() {
+        return historicoComissao;
+    }
+
+    public void setHistoricoComissao(String historicoComissao) {
+        this.historicoComissao += historicoComissao;
+    }
+
+    public double getComissao() {
+        return comissao;
+    }
+
+    public void setComissao(double comissao) {
+        this.comissao = comissao;
+    }
+    
+    @Override
+    public String toString(){
+        System.out.print(super.toString());
+        return "historico comissao: "+historicoComissao+"\ncomissao: "+comissao+"\n";
+    }
             
-       public void Comissao(EmpComissionado [] empComissionado, double valueVenda, String dateVenda,int id) {
-           
-           for(EmpComissionado perc : empComissionado){
-                    
-                    if(perc != null && perc.id == id){
-                        System.out.println("ID encontrado com sucesso");
-                    
-                        double valueComissao = (.1 * valueVenda);
-                        perc.comissao+=valueComissao;
-
-                        perc.salario *= valueComissao; // Calculo comissao
-                        perc.historicoComissao += "data da venda: "+dateVenda+"\nvalor venda: "+
-                        valueVenda+"\nComissao recebida: "+valueComissao+"\n";
-
-                        System.out.println("Venda + Comissão adicionada ao sistema");
-
-                        return;
-                    }                    
-            }   
-            System.out.println("ID não localizado - Você não é um empregado assalariado comissionado");
+       public void Comissao(ArrayList<Empregados> empregados, double valueVenda, String dateVenda,int id) {
+           for(Empregados perc : empregados){
+              
+           }
        }
        
        public void printarEmpregados (EmpComissionado [] comissionado){
-           
-            if (comissionado == null || comissionado.length == 0){
-                   System.out.println("Nenhum empregado adicionado\n");
-                   return;
-            }
-           
-            for (EmpComissionado temp : comissionado){
-                
-                if(temp != null){
-                    System.out.println("nome: "+temp.nome+"\nendereco: "+temp.endereco+
-                    "\ndata nascimento: "+temp.dataNascimento+"\nid: "+temp.id+"\nTipo empregado: "+temp.tipoEmp+"\nComissão: "+temp.comissao+"\n"); 
-                }
-            }        
-        }
+  
+       }
             
-        
-    @Override
-        public void addAssalariado(double salario){
-        this.comissao = 0;
-        this.salario = salario;
-        this.comissioned = true;
-
-    }
 }
