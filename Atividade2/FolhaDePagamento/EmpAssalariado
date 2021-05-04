@@ -1,4 +1,4 @@
-package FolhaDePagamento;
+import java.util.ArrayList;
 
 /**
  *
@@ -12,8 +12,8 @@ public class EmpAssalariado extends Empregados{
         
     }
 
-    public EmpAssalariado(double salario, String nome, String endereco, String dataNascimento, int id, String tipoEmp) {
-        super(nome, endereco, dataNascimento, id, tipoEmp);
+    public EmpAssalariado(double salario, String nome, String endereco, String dataNascimento, int id, String tipoEmp, boolean valueSindicato) {
+        super(nome, endereco, dataNascimento, id, tipoEmp, valueSindicato);
         this.salario = salario;        
     }
 
@@ -45,8 +45,11 @@ public class EmpAssalariado extends Empregados{
         return "salario: "+salario+"\nComissionado: "+comissioned+"\n";
     }
     
-    public void printarEmpregados (EmpAssalariado [] assalariado){
-          
+    public void efetuarPagamento (ArrayList<Empregados> empregados, int id){
+        
     }
     
+    public void printarEmpregados (EmpAssalariado [] assalariado){
+          
+    }    
 }
