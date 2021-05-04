@@ -1,5 +1,7 @@
 package FolhaDePagamento;
 
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 /**
@@ -12,17 +14,36 @@ public class Empregados {
     private String dataNascimento;
     private int id;
     private String tipoEmp;
+    private boolean valueSindicato = false;
+    private Sindicato sindicato;
     
     public Empregados() {
         
     }
 
-    public Empregados(String nome, String endereco, String dataNascimento, int id, String tipoEmp) {
+    public Empregados(String nome, String endereco, String dataNascimento, int id, String tipoEmp, boolean valueSindicato) {
         this.nome = nome;
         this.endereco = endereco;
         this.dataNascimento = dataNascimento;
         this.id = id;
         this.tipoEmp = tipoEmp;
+        this.valueSindicato = valueSindicato;
+    }
+
+    public boolean isValueSindicato() {
+        return valueSindicato;
+    }
+
+    public void setValueSindicato(boolean valueSindicato) {
+        this.valueSindicato = valueSindicato;
+    }
+
+    public Sindicato getSindicato() {
+        return sindicato;
+    }
+
+    public void setSindicato(Sindicato sindicato) {
+        this.sindicato = sindicato;
     }
 
     public String getNome() {
@@ -67,8 +88,8 @@ public class Empregados {
     
     @Override
     public String toString(){
-        return "Nome: "+nome+"\nid: "+id+"\nEndereço: "+endereco+"Data nasc: "+dataNascimento;
-    }
+        return "Nome: "+nome+"\nid: "+id+"\nEndereço: "+endereco+"\nData nasc: "+dataNascimento;
+    }    
     
     public void removerEmpregado(AgendaPagamento agenda, int clean){
         }
@@ -79,11 +100,8 @@ public class Empregados {
     }
     
     
-    public void consultarVendas(EmpComissionado [] empComissionado, int id){
-
-    }
-    
     public void printarEmpregados (){
 
     }
 }
+
