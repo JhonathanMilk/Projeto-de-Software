@@ -1,4 +1,5 @@
 package FolhaDPagamento;
+
 import java.util.ArrayList;
 
 /**
@@ -12,8 +13,8 @@ public class EmpComissionado extends EmpAssalariado {
     public EmpComissionado() {        
     }
 
-    public EmpComissionado(double comissao, double salario, String nome, String endereco, String dataNascimento, int id, String tipoEmp) {
-        super(salario, nome, endereco, dataNascimento, id, tipoEmp);
+    public EmpComissionado(double comissao, double salario, String nome, String endereco, String dataNascimento, int id, String tipoEmp, boolean valueSindicato) {
+        super(salario, nome, endereco, dataNascimento, id, tipoEmp, valueSindicato);
         super.setComissioned(true);
         this.comissao = comissao;
     }        
@@ -31,19 +32,47 @@ public class EmpComissionado extends EmpAssalariado {
     }
 
     public void setComissao(double comissao) {
-        this.comissao = comissao;
+        this.comissao += comissao;
     }
     
     @Override
     public String toString(){
         System.out.print(super.toString());
-        return "historico comissao: "+historicoComissao+"\ncomissao: "+comissao+"\n";
+        return "\ncomissao: "+comissao+"\n";
+    }
+    
+    public void printVendas(ArrayList<Empregados>empregados, int id){
+        for(Empregados perc : empregados){
+            if (perc.getId() == id && perc.getTipoEmp().equals("Comissionado")){
+                
+                EmpComissionado print = (EmpComissionado) perc;
+                System.out.println("Nome empregado: "+print.getNome()+"\nhistorico comissao:\n\n"+print.historicoComissao+"comissao total: "+print.comissao+"\n");
+                return;
+            }
+        }
+        System.out.println("id não encontrado ou empregado não é comissionado\n");
     }
             
        public void Comissao(ArrayList<Empregados> empregados, double valueVenda, String dateVenda,int id) {
            for(Empregados perc : empregados){
-              
+               
+              if (perc.getId() == id && perc.getTipoEmp().equals("Comissionado")){
+                  
+                  double calComissao = valueVenda*.2;
+                  
+                  EmpComissionado alterar = (EmpComissionado)perc;
+                  alterar.setComissao(calComissao);
+                  alterar.setHistoricoComissao("Valor venda: "+valueVenda+"\nData da venda: "+dateVenda+"\nComissao recebida: "+calComissao+"\n\n");
+                  System.out.println("Venda adicionada com sucesso! Verifique seu histórico de vendas para detalhar seus recebimentos\n");
+                  return;
+              }
            }
+           System.out.println("id não é válido ou empregado não é comissionado!");
+       }
+       
+    @Override
+       public void efetuarPagamento (ArrayList<Empregados> empregados, int id){
+           super.efetuarPagamento(empregados, id);
        }
        
        public void printarEmpregados (EmpComissionado [] comissionado){
