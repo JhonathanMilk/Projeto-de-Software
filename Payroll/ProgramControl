@@ -1,0 +1,301 @@
+ackage Payroll;
+
+import java.util.Scanner;
+import java.util.ArrayList;
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class ProgramControl {
+
+    Scanner scan = new Scanner(System.in);
+
+    public void addEmployees(int id, ArrayList<PaymentSchedule> schedule) {
+
+        System.out.println("Nome empregado:");
+        String name = scan.nextLine();
+        System.out.println("endereco empregado:");
+        String adress = scan.nextLine();
+        System.out.println("data de nascimento:");
+        String birthyDate = scan.nextLine();
+        System.out.println("Digite o tipo de empregado: "
+                + "\n1 - Assalariado"
+                + "\n2 - Horista)");
+        int employeeType = scan.nextInt();
+        clearBuffer(scan);
+
+        System.out.println("O empregado pertence ao sindicato? (Y / N)");
+        String valueSindicato = scan.nextLine();
+
+        System.out.println("Qual o tipo de pagamento do empregado?\n"
+                + "\n1 - Cheque Correios"
+                + "\n2 - Cheque em mãos"
+                + "\n3 - Depósito bancario\n");
+        int paymentOption = scan.nextInt();
+        clearBuffer(scan);
+
+        PaymentMethod paymentMethod = null;
+        BankAccountDeposit account = new BankAccountDeposit();
+
+        switch (paymentOption) {
+            case 1:
+                paymentMethod = new PaymentMethod("Cheque Correios");
+                break;
+            case 2:
+                paymentMethod = new PaymentMethod("Cheque em mãos");
+                break;
+            case 3:
+                paymentMethod = new PaymentMethod("Depósito Bancário", account);
+                account.addBankAccountDate();
+                break;
+            default:
+                System.out.println("opção inválida");
+                return;
+        }
+
+
+        boolean syndicateValidation;
+
+        syndicateValidation = (valueSindicato.equalsIgnoreCase("Y"));
+        
+        Employees employee;
+        switch(employeeType) {
+            
+            case 1: {
+                System.out.println("O empregado é comissionado? Pressione Y para sim / N para não");
+                String comissioned = scan.nextLine();
+                
+                if (comissioned.equalsIgnoreCase("Y")) {
+                    employee = new EmpCommissioned(0, 2000, name, adress, birthyDate, id, syndicateValidation, paymentMethod);
+                    schedule.get(1).employees.add(employee); break;                     
+                }
+                else if(comissioned.equalsIgnoreCase("N")){
+                    employee = new EmpSalaried(2000, name, adress, birthyDate, id, syndicateValidation, paymentMethod);
+                    schedule.get(0).employees.add(employee); break;                   
+                }
+                else {
+                System.out.println("Opção inválida");
+                }
+            }
+            case 2: {
+                employee = new EmpHourly(0, name, adress, birthyDate, id, syndicateValidation, paymentMethod);
+                schedule.get(2).employees.add(employee);break;
+            } 
+            default: {
+                System.out.println("Tipo de empregado inválido");
+                return;
+            }
+        }
+        
+        if (syndicateValidation) {
+            employee.setRateSyndicate();
+        }
+        
+        System.out.println("Empregado adicionado com sucesso.\n");
+    }
+
+    public void removeEmployee(ArrayList<PaymentSchedule> schedule) {
+
+        Employees cleaner = new Employees();
+        System.out.println("Digite o id do empregado que deseja remover:");
+        int clean = scan.nextInt();
+        boolean remove = false;
+
+        remove = cleaner.removerEmpregado(schedule, clean);
+
+        if (remove) {
+            System.out.println("Empregado removido");
+        } else {
+            System.out.println("Empregado não encontrado");
+        }
+    }
+
+    public void setHoursWorked(ArrayList<PaymentSchedule> schedule) {
+
+        System.out.println("Por favor, digite seu ID");
+        int idHourly = scan.nextInt();
+
+        for (PaymentSchedule perc : schedule) {
+            for (Employees empHourly : perc.employees) {
+                if (empHourly.getId() == idHourly && empHourly.getEmployeeType() == "Horista") {
+
+                    System.out.println("Digite a quantidade de horas trabalhadas");
+                    double workedHours = scan.nextDouble();
+                    clearBuffer(scan);
+
+                    EmpHourly empHourly2 = (EmpHourly) empHourly;
+                    empHourly2.submitTimecard(workedHours, idHourly);
+                    return;
+                }
+            }
+        }
+
+        System.out.println("ID não encontrado ou empregado não é Horista");
+    }
+
+    public void addSale(ArrayList<PaymentSchedule> schedule) {
+
+        System.out.println("Digite o id do vendedor:");
+        int idCommissioned = scan.nextInt();
+        Main.clearBuffer(scan);
+
+        for (PaymentSchedule perc : schedule) {
+            for (Employees empComissioned : perc.employees) {
+                if (empComissioned.getId() == idCommissioned && empComissioned.getEmployeeType() == "Comissionado") {
+
+                    System.out.println("Digite o valor da venda:");
+                    Double valueVenda = scan.nextDouble();
+                    clearBuffer(scan);
+                    System.out.println("Digite a data da venda:");
+                    String dateVenda = scan.nextLine();
+
+                    EmpCommissioned insertCommission = (EmpCommissioned) empComissioned;
+                    insertCommission.addCommission(valueVenda, dateVenda, idCommissioned);
+                    return;
+                }
+            }
+        }
+        System.out.println("ID não encontrado ou empregado não é comissionado");
+    }
+
+    public void checkSalesHistory(ArrayList<PaymentSchedule> schedule) {
+
+        System.out.println("Digite o id do empregado: ");
+        int idEmployee = scan.nextInt();
+
+        for (PaymentSchedule perc : schedule) {
+            for (Employees empComissioned : perc.employees) {
+                if (empComissioned.getId() == idEmployee && empComissioned.getEmployeeType() == "Comissionado") {
+
+                    EmpCommissioned displaySales = (EmpCommissioned) empComissioned;
+                    displaySales.showSales();
+                    return;
+                }
+            }
+        }
+        System.out.println("ID não encontrado! O usuário precisa ser comissionado para registrar vendas");
+    }
+
+    public void changeEmployeeDetails(ArrayList<PaymentSchedule> schedule) {
+
+        if (PaymentSchedule.isEmpty(schedule)) {
+            System.out.println("Agendas vazias! Por favor insira empregados em alguma agenda de pagamento\n");
+            return;
+        }
+
+        System.out.println("Digite o id do empregado");
+        int idEmployee = scan.nextInt();
+        clearBuffer(scan);
+        int i =0;
+
+        for (PaymentSchedule perc : schedule) {
+            for (Employees changeDetails : perc.employees) {
+                if (changeDetails.getId() == idEmployee) {
+
+                    System.out.println("Quais dados deseja mudar?\n\n"
+                            + "1 - Nome\n"
+                            + "2 - Endereço\n"
+                            + "3 - Tipo de empregado\n"
+                            + "4 - Método de pagamento\n"
+                            + "5 - Dados sindicato\n"
+                            + "6 - Agenda de pagamento\n"
+                            + "7 - Retornar sem alterações\n");
+                    int change = scan.nextInt();
+                    clearBuffer(scan);
+                    ChangeRegistration changeRegistration = new ChangeRegistration();
+
+                    switch (change) {
+                        case 1:
+                            changeRegistration.changeName(changeDetails);
+                            break;
+                        case 2:
+                            changeRegistration.changeAdress(changeDetails);
+                            break;
+                        case 3:
+                            changeRegistration.changeTypeEmployee(changeDetails, schedule);
+                            break;
+                        case 4:
+                            changeRegistration.changePaymentMethod(changeDetails);
+                            break;
+                        case 5:
+                            changeRegistration.changeSyndicateData(changeDetails);
+                            break;
+                        case 6:
+                            changeRegistration.changePaymentSchedule(schedule, i, changeDetails);
+                            break;
+                        case 7:
+                            return;
+                        default:
+                            System.out.println("Opção inválida\n");
+                            break;
+                    }
+
+                    //   changeDetails.alterarCadastro(agenda, change);
+                    //    perc.empregados.remove(changeDetails);
+                    return;
+                }
+            }
+            i++;
+        }
+        System.out.println("ID não encontrado");
+    }
+
+    public void addServiceRate(ArrayList<PaymentSchedule> schedule) {
+        System.out.println("Por favor insira o ID do empregado no Sindicato: ");
+        int idSyndicate = scan.nextInt();
+        clearBuffer(scan);
+
+        Syndicate syndicate = new Syndicate();
+        syndicate.insertServiceRate(schedule, idSyndicate);
+    }
+
+    public void showServiceRate(ArrayList<PaymentSchedule> schedule) {
+        System.out.println("Por favor insira o ID do empregado no Sindicato: ");
+        int idSyndicate = scan.nextInt();
+        clearBuffer(scan);
+
+        Syndicate syndicate = new Syndicate();
+        syndicate.showerServiceRate(schedule, idSyndicate);
+    }
+
+    public void makeEmployeesPayments(ArrayList<PaymentSchedule> schedule) {
+        System.out.println("Escolha a agenda para realizar os pagamentos\n");
+        PaymentSchedule.printAgenda(schedule);
+        int option = scan.nextInt();
+        Main.clearBuffer(scan);
+
+        if (schedule.size() >= option && schedule.size() > 0) {
+            if (PaymentSchedule.isEmpty(schedule.get(option - 1))) {
+                System.out.println("Agenda vazia! Por favor insira empregados na agenda.\n");
+                return;
+            }
+            PaymentMethod.makePayments(schedule.get(option - 1));
+        } else {
+            System.out.println("Você digitou uma opção inválida!\n");
+        }
+    }
+
+    public void checkLastPayments(ArrayList <PaymentSchedule> schedule){
+       
+        System.out.println("Digite o id do empregado:");
+        int idEmployee = scan.nextInt();
+        Main.clearBuffer(scan);
+        
+        for (PaymentSchedule perc : schedule) {
+            for (Employees checkEmployee : perc.employees){
+                if(checkEmployee.getId() == idEmployee){
+                    System.out.println(checkEmployee.getLastPayments());
+                    return;
+                }
+            }
+        }
+        System.out.println("Empregado não encontrado");
+    }
+    
+    private static void clearBuffer(Scanner scan) {
+        if (scan.hasNextLine()) {
+            scan.nextLine();
+        }
+    }
+}
