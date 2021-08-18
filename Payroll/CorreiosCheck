@@ -1,0 +1,45 @@
+package Payroll;
+
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class CorreiosCheck {
+    
+    public static void correiosCheckPayment (Employees emp){
+        
+        String comprov = "======================================\n"
+                                    + "***Cheque****\n" +
+                                       "Pagar por este cheque a quantia de: "+emp.getSalary()+
+                                       "R$ para: "+emp.getName()+
+                                       "\nAssinatura: ___________________________"+
+                                       "\nEmpresa Fulana - CNPJ: XX.XXX.XXX/0001-XX\n"
+                                    + "=====================================\n";
+        
+        emp.getLastPayments().addFirst(comprov);
+       
+        System.out.println("Valor de "+emp.getCalcSalario()+" pago para "+emp.getName()+ "--->"+emp.getPaymentMethod().getPaymentType()+" | Endereço de envio: "+emp.getAdress());
+        
+        if(emp.getEmployeeType().equalsIgnoreCase("assalariado")){
+            
+ //           EmpAssalariado emp2 = (EmpAssalariado)emp;
+            
+        }
+        else if(emp.getEmployeeType().equalsIgnoreCase("comissionado")){
+            EmpCommissioned emp2 = (EmpCommissioned)emp;
+            
+            emp2.setCommission(0);
+        }
+        else if(emp.getEmployeeType().equalsIgnoreCase("horista")){
+            EmpHourly emp2 = (EmpHourly)emp;
+            
+            emp2.setWorkedHours(0);
+            emp2.setExtraHours(0);
+        }
+         emp.setSalary(0);
+         
+        if(emp.isValueSyndicato())             //Limpar serviços adicionais após pagamento
+            emp.getSyndicate().serviceRate = null;    
+    }
+}
