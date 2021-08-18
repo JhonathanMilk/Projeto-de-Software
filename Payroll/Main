@@ -1,0 +1,141 @@
+package Payroll;
+
+import java.util.Scanner;
+import java.util.ArrayList;
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class Main {
+    public static void main(String[] args) {
+       Scanner scan = new Scanner(System.in);
+       
+       /**/
+       ArrayList <PaymentSchedule> schedule = new ArrayList<> ();
+       ArrayList <Employees> mensalmente = new ArrayList <>();
+       ArrayList <Employees> semanalmente = new ArrayList <>();
+       ArrayList <Employees> bisemanalmente = new ArrayList <>();
+       ProgramControl programControl = new ProgramControl ();
+       
+       PaymentSchedule monthly = new PaymentSchedule("Mensal", "Agenda com todos funcionários que recebem no último dia do mês");
+       PaymentSchedule weekly = new PaymentSchedule("Semanal", "Agenda com todos funcionários que recebem por semana");
+       PaymentSchedule biweekly = new PaymentSchedule("Bisemanal", "Agenda com todos funcionários que recebem a cada duas semanas");
+       
+       monthly.employees = mensalmente;
+       biweekly.employees = bisemanalmente;
+       weekly.employees = semanalmente;
+       
+       
+       schedule.add(monthly);
+       schedule.add(biweekly);
+       schedule.add(weekly);
+       
+       PaymentSchedule methodUse = new PaymentSchedule ();
+       
+       
+       int id = 0;
+        
+       while(true){
+            System.out.println("Digite alguma opção:\n");
+            System.out.println("1 - Adicionar Empregado\n"+
+                               "2 - Remover Empregado\n"+"3 - Visualizar Empregados\n"+
+                               "4 - Marcar Ponto\n"+"5 - Adicionar Venda\n"+
+                               "6 - Verificar Historicos de Vendas\n"+"7 - Realizar Pagamentos\n"+
+                               "8 - Verificar últimos pagamentos\n"+"9 - Criar Nova Agenda\n"+"10 - Visualizar Agendas\n"+
+                               "11 - Alterar Dados do Empregado\n"+"12 - Inserir Taxa de Serviço Adicional - Sindicato\n"+
+                               "13 - Exibir Taxas Adicionais Sindicato\n"+"14 - Sair do Programa\n");
+            int entry = scan.nextInt();
+            clearBuffer(scan);
+           // scan.close();
+            
+            if (entry == 1){
+                /*Funcao adicionar*/
+                
+                id+=1;               
+                programControl.addEmployees(id, schedule);
+            }
+            
+            else if (entry == 2){
+                /*Funcao remover*/
+      
+                if(monthly.isEmpty(schedule)){     //mensal é usado apenas para utilizar o metodo dessa classe
+                    System.out.println("Lista de empregados vazia, por favor adicionar empregados!\n");
+                    continue;
+                }                
+                programControl.removeEmployee(schedule);
+            }           
+            
+            else if (entry == 3){ //Funçao visualizar empregados
+                
+                if(methodUse.isEmpty(schedule)){
+                    System.out.println("Lista de empregados vazia, por favor adicionar empregados!\n");
+                    continue;
+                } 
+                
+                for(PaymentSchedule print : schedule){
+                    
+                    System.out.println("Agenda: "+print.getNome()+"\n");
+                    
+                    for(Employees printEmp : print.employees){
+                       
+                        System.out.println(printEmp);     
+                        
+                        if(printEmp.isValueSyndicato()){
+                            System.out.println("Empregado pertencente ao sindicato");
+                            System.out.println("ID identificação no sindicato: "+printEmp.getSyndicate().getEmployeeIdSyndicate()
+                                                          +"\nTaxa sindical: "+printEmp.getSyndicate().getMonthlyRate()+"%\n");
+                        }
+                    }
+                    System.out.println("_____________________________________________________________\n");
+                }                            
+            }
+            
+            else if (entry == 4){
+                programControl.setHoursWorked(schedule);
+            }
+            
+            else if (entry == 5){ 
+                    //Adicionar Venda
+                
+                programControl.addSale(schedule);
+            }
+            
+            else if (entry == 6){ //verificar historico de vendas;
+                programControl.checkSalesHistory(schedule);
+            }
+             else if (entry == 7){
+                programControl.makeEmployeesPayments(schedule);
+            }
+            else if (entry == 8){
+                programControl.checkLastPayments(schedule);
+            }
+            else if (entry == 9){     //Criação de novas agendas
+                PaymentSchedule.criarAgenda(schedule);                
+            }
+            else if (entry == 10){     //Printar agendas disponiveis
+                PaymentSchedule.printAgenda(schedule);                
+            }
+             else if (entry == 11){       
+                programControl.changeEmployeeDetails(schedule);
+            }
+            else if(entry == 12){ //Inserir taxa de serviço do sindicato
+                programControl.addServiceRate(schedule);
+            }
+            else if(entry == 13){
+                programControl.showServiceRate(schedule);
+            }
+            else if (entry == 14){
+                break;  //Finalizar programa
+            }
+            else{
+                System.out.println("Opcao invalida! Tente novamente.");
+            }
+        }
+    }
+    public static void clearBuffer(Scanner scan) {
+        if (scan.hasNextLine()) {
+            scan.nextLine();
+        }
+    } 
+}
+
