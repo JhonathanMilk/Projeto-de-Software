@@ -1,0 +1,73 @@
+package Payroll;
+
+import java.util.ArrayList;
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class EmpHourly extends Employees {
+
+    private double workedHours;
+    private double extraHours;
+
+    public EmpHourly() {
+    }
+
+    public EmpHourly(double horasTrabalhadas, String nome, String endereco, String dataNascimento, int id, boolean valueSindicato, PaymentMethod paymentType) {
+        super(0, nome, endereco, dataNascimento, id, "Horista", valueSindicato, paymentType);
+        this.workedHours = horasTrabalhadas;
+        //      this.salario = 0;
+        this.extraHours = 0;
+    }
+
+    public double getExtraHours() {
+        return extraHours;
+    }
+
+    public void setExtraHours(double extraHours) {
+        this.extraHours = extraHours;
+    }
+
+    public double getWorkedHours() {
+        return workedHours;
+    }
+
+    public void setWorkedHours(double workedHours) {
+        this.workedHours = workedHours;
+    }
+
+    /*  public double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }*/
+    public void submitTimecard(double horasTrabalhadas, int id) {
+
+        this.workedHours += horasTrabalhadas;
+
+        if (horasTrabalhadas <= 8.0) {
+            super.setSalary(super.getSalary() + 10 * horasTrabalhadas); //pagando 10 reais por hora trabalhada;
+        } else {
+            double horasExtras = horasTrabalhadas - 8;  //calculo horas extras
+            this.extraHours += horasExtras;
+            super.setSalary(super.getSalary() + (10 * 8) + (horasExtras * 10 * 1.5));
+            //        this.salario += (10*8)+(horasExtras*10*1.5);  //somando horas trabalhadas + taxa de horas extra;
+        }
+        System.out.println("Cartão submetido com sucesso");
+        return;
+    }
+
+    public void efetuarPagamento(ArrayList<Employees> empregados, int id) {
+
+    }
+
+    @Override
+    public String toString() {
+        System.out.println(super.toString());
+        return "Horas trabalhadas: " + workedHours + "\nHoras extras: " + extraHours + "\nSalario recorrente: " + super.getSalary() + "\n";
+    }
+
+}
