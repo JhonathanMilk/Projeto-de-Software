@@ -1,0 +1,74 @@
+package Payroll;
+
+import java.util.ArrayList;
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class EmpCommissioned extends EmpSalaried {
+    private String historicCommission = "";
+    private double commission;
+
+    public EmpCommissioned() {        
+    }
+
+    public EmpCommissioned(double commission, double salary, String name, String adress, String birthyDate, int id, boolean valueSyndicate, PaymentMethod paymentType) {
+        super(salary, name, adress, birthyDate, id, "Comissionado", valueSyndicate, paymentType);
+        super.setCommissioned(true);
+        this.commission = commission;
+    }        
+    
+    public double getCalcSalario() {
+        double salary = super.getCalcSalario();
+        return salary+commission;
+    }
+    
+    public String getHistoricCommission() {
+        return historicCommission;
+    }
+
+    public void setHistoricCommission(String historicCommission) {
+        this.historicCommission += historicCommission;
+    }
+
+    public double getCommission() {
+        return commission;
+    }
+    
+    public void setCommission(double commission) {
+        this.commission = commission;
+    }
+    
+    @Override
+    public String toString(){
+        System.out.print(super.toString());
+        return "\nComissão: "+commission+"\n";
+    }
+    
+    public void showSales(){
+                System.out.println("Nome empregado: "+this.getName()+"\n"
+                                                + "Histórico comissão:\n\n"+this.historicCommission+""
+                                                + "Comissão total: "+this.commission+"\n");
+    }
+            
+       public void addCommission(double valueSale, String dateSale, int id) {
+                  
+                  double calcCommission = valueSale*.2;
+                  
+                  setCommission(this.commission+calcCommission);
+                  setHistoricCommission("Valor venda: "+valueSale+"\nData da venda: "+dateSale+"\nComissao recebida: "+calcCommission+"\n\n");
+                  System.out.println("Venda adicionada com sucesso! Verifique o histórico de vendas para detalhar os recebimentos do empregado\n");
+                  return;
+       }
+       
+    @Override
+       public void efetuarPagamento (ArrayList<Employees> empregados, int id){
+           super.efetuarPagamento(empregados, id);
+       }
+       
+       public void printarEmpregados (EmpCommissioned [] comissionado){
+  
+       }
+            
+}
