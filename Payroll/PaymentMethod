@@ -1,0 +1,61 @@
+package Payroll;
+
+import java.util.ArrayList;
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class PaymentMethod {
+
+    private String paymentType;
+    private BankAccountDeposit bankAccount = null;
+    ArrayList<String> paymentHistory;
+
+    public PaymentMethod() {
+
+    }
+
+    public PaymentMethod(String paymentType) {
+        this.paymentType = paymentType;
+
+        ArrayList<String> payment = new ArrayList();
+        this.paymentHistory = payment;
+    }
+
+    public PaymentMethod(String paymentType, BankAccountDeposit bankAccount) {
+        this(paymentType);
+        this.bankAccount = bankAccount;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public BankAccountDeposit getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccountDeposit bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public static void makePayments(PaymentSchedule agenda) {
+        for (Employees emp : agenda.employees) {
+            if (emp.getPaymentMethod().paymentType.equalsIgnoreCase("cheque correios")) {
+                CorreiosCheck.correiosCheckPayment(emp);
+            } else if (emp.getPaymentMethod().paymentType.equalsIgnoreCase("cheque em mãos")) {
+                CheckInHands.CheckInHandsPayment(emp);
+            } else if (emp.getPaymentMethod().paymentType.equalsIgnoreCase("depósito bancário")) {
+                BankAccountDeposit.BankAccountPayment(emp);
+            } else {
+                System.out.println("Erro! Funcionário não possui nenhum método de pagamento\n");
+            }
+        }
+        System.out.println("\n");
+    }
+}
