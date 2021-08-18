@@ -1,0 +1,85 @@
+package Payroll;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class PaymentSchedule {
+    private String nome;
+    private String info = "";
+    ArrayList<Employees> employees;
+
+    public PaymentSchedule() {
+    }
+            
+    public PaymentSchedule(String nome, String Info) {
+        this.nome = nome;
+        this.info = info;
+    }
+    
+    
+    public static void criarAgenda(ArrayList <PaymentSchedule> agenda){
+        Scanner scan = new Scanner(System.in);
+        
+        System.out.println("Por Favor, digite o nome para a agenda:");
+        String nameAgenda = scan.nextLine();
+        System.out.println("Digite alguma descrição para a agenda:");
+        String infoAgenda = scan.nextLine();
+        
+        ArrayList <Employees> empregado = new ArrayList();
+        PaymentSchedule agendanew = new PaymentSchedule(nameAgenda, infoAgenda);
+        agendanew.employees = empregado;
+        agenda.add(agendanew);
+        System.out.println("Agenda "+nameAgenda+" criada com sucesso!\n");
+    }
+    
+    public static void printAgenda (ArrayList <PaymentSchedule> agenda){
+        int i = 0;
+        System.out.println("Agendas disponíveis:");
+        for(PaymentSchedule print : agenda){
+            i++;
+            System.out.println(i +" - " + print.nome);
+        }
+    }
+    
+    public static void excluirAgenda(){
+        
+    }
+    
+    public static boolean isEmpty(ArrayList <PaymentSchedule> agenda){
+        for(PaymentSchedule perc : agenda){
+            if(!perc.employees.isEmpty()){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static boolean isEmpty(PaymentSchedule agenda){
+            if(!agenda.employees.isEmpty()){
+                return false;
+            }
+        return true;
+    }
+    
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+    
+    
+}
