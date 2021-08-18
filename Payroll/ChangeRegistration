@@ -1,0 +1,155 @@
+
+package Payroll;
+
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class ChangeRegistration {
+
+    Scanner scan = new Scanner(System.in);
+
+    public void changeName(Employees employee) {
+        System.out.println("Digite o novo nome:");
+        String name = scan.nextLine();
+        employee.setName(name);
+    }
+
+    public void changeAdress(Employees employee) {
+        System.out.println("Digite o novo endereço:");
+        String adress = scan.nextLine();
+        employee.setAdress(adress);
+    }
+
+    public void changeTypeEmployee(Employees emp, ArrayList<PaymentSchedule> schedule) {
+        System.out.println("Escolha a opção referente ao novo tipo de usuário?\n"
+                + "1 - Assalariado\n"
+                + "2 - Comissionado\n"
+                + "3 - Horista\n");
+
+        int employeeType = scan.nextInt();
+        clearBuffer(scan);
+        
+        Employees employee;
+        if (employeeType == 1) {
+            employee = new EmpSalaried(2000, emp.getName(), emp.getAdress(), emp.getBirthDate(), emp.getId(), emp.isValueSyndicato(), emp.getPaymentMethod());
+            schedule.get(0).employees.add(employee);
+        } else if (employeeType == 2) {
+            employee = new EmpCommissioned(0, 2000, emp.getName(), emp.getAdress(), emp.getBirthDate(), emp.getId(), emp.isValueSyndicato(), emp.getPaymentMethod());
+            schedule.get(1).employees.add(employee);
+        } else if (employeeType == 3) {
+            employee = new EmpHourly(0, emp.getName(), emp.getAdress(), emp.getBirthDate(), emp.getId(), emp.isValueSyndicato(), emp.getPaymentMethod());
+            schedule.get(2).employees.add(employee);
+        } else {
+            System.out.println("Opção inválida!");
+            return;
+        }
+        
+        if (emp.isValueSyndicato()) {
+            employee.setSyndicate(emp.getSyndicate());
+        }
+        
+        Employees remove = new Employees();
+
+        remove.removeEmployee(schedule, emp);
+    }
+
+    public void changeSyndicateData(Employees employee) {
+        System.out.println("1 - Incluir empregado no sindicato\n2 - Remover empregado do Sindicato\n3 - Alterar ID no sindicato\n");
+        int change = scan.nextInt();
+        clearBuffer(scan);
+
+        switch (change) {
+            case 1:
+
+                if (employee.isValueSyndicato()) {
+                    System.out.println("Empregado já pertence ao Sindicato\n");
+                } else {
+                    employee.setValueSyndicato(true);
+                    employee.setRateSyndicate();
+                    System.out.println("Empregado adicionado no Sindicato com sucesso!\n");
+                }
+                break;
+
+            case 2:
+
+                if (!employee.isValueSyndicato()) {
+                    System.out.println("Empregado não pertence ao Sindicato\n");
+                } else {
+                    employee.getSyndicate().serviceRate = null;
+                    employee.getSyndicate().setEmployeeIdSyndicate(0);
+                    employee.setValueSyndicato(false);
+                    System.out.println("Empregado removido do Sindicato com sucesso!\n");
+                }
+                break;
+
+            case 3:
+
+                if (!employee.isValueSyndicato()) {
+                    System.out.println("Empregado não pertence ao Sindicato. Primeiro inclua o empregado no Sindicato, para poder fazer alterações de ID!\n");
+                } else {
+                    employee.getSyndicate().setEmployeeIdSyndicate(GenerateId.getNextId());
+                    System.out.println("Seu novo ID é: " + employee.getSyndicate().getEmployeeIdSyndicate() + "\n");
+                }
+                break;
+
+            default:
+                System.out.println("Opção inválida\n");
+        }
+    }
+    
+    public void changePaymentMethod(Employees employee){
+        System.out.println("Qual o novo tipo de pagamento do empregado?\n"
+                + "\n1 - Cheque Correios"
+                + "\n2 - Cheque em mãos"
+                + "\n3 - Depósito bancario\n");
+        int paymentOption = scan.nextInt();
+        clearBuffer(scan);
+        
+        switch(paymentOption){
+            case 1:
+                employee.getPaymentMethod().setPaymentType("Cheque correios");
+                employee.getPaymentMethod().setBankAccount(null); break;
+            case 2:
+                employee.getPaymentMethod().setPaymentType("Cheque em mãos");
+                employee.getPaymentMethod().setBankAccount(null); break;
+            case 3:
+                BankAccountDeposit bankAccount = new BankAccountDeposit();
+                bankAccount.addBankAccountDate();
+                
+                employee.getPaymentMethod().setPaymentType("Depósito bancário");
+                employee.getPaymentMethod().setBankAccount(bankAccount); break;
+                
+            default: System.out.println("Opção inválida\n"); return;
+        }
+        System.out.println("Método de pagamento alterado com sucesso\n");
+    }
+    
+    public void changePaymentSchedule(ArrayList <PaymentSchedule> schedule, int oldSchedule, Employees employee){
+        System.out.println("Selecione a nova agenda de pagamento\n");
+        PaymentSchedule.printAgenda(schedule);
+        int entry = scan.nextInt();
+        Main.clearBuffer(scan);
+        
+        if(entry-1 == oldSchedule){
+            System.out.println("Empregado já pertence a esta agenda\n");
+            return;
+        }
+        
+        schedule.get(entry-1).employees.add(employee);
+        schedule.get(oldSchedule).employees.remove(employee);
+        
+        System.out.println("Agenda alterada com sucesso\n");
+    }
+    
+    private static void clearBuffer(Scanner scan) {
+        if (scan.hasNextLine()) {
+            scan.nextLine();
+        }
+    }
+
+}
