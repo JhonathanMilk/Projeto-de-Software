@@ -1,0 +1,64 @@
+package Payroll;
+
+
+import java.util.ArrayList;
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class EmpSalaried extends Employees{
+  //  private double salario;
+    private boolean commissioned = false;
+
+    public EmpSalaried() {
+        
+    }
+    
+    public EmpSalaried(double salary, String name, String adress, String birthyDate, int id, String employeeType, boolean valueSyndicate, PaymentMethod paymentType) {
+        super(salary, name, adress, birthyDate, id, "Comissionado", valueSyndicate, paymentType);
+  //      this.salario = salario;        
+    }
+    
+    public EmpSalaried(double salary, String name, String adress, String birthyDate, int id, boolean valueSyndicate, PaymentMethod paymentType) {
+        super(salary, name, adress, birthyDate, id, "Assalariado", valueSyndicate, paymentType);
+  //      this.salario = salario;        
+    }
+
+  /*  public double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }*/
+
+    public boolean isCommissioned() {
+        return commissioned;
+    }
+
+    public void setCommissioned(boolean commissioned) {
+        this.commissioned = commissioned;
+    }
+    
+    
+  /*  public void addAssalariado(double salario){       
+        this.salario = salario;
+    }*/
+    
+    
+    @Override
+    public String toString(){
+        System.out.println(super.toString());
+        return "salario: "+super.getSalary()+"\nComissionado: "+commissioned+"\n";
+    }
+    
+    public void efetuarPagamento (ArrayList<Employees> empregados, int id){
+        
+    }
+    
+    public void printarEmpregados (EmpSalaried [] assalariado){
+          
+    }
+    
+}
