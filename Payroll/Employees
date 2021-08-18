@@ -1,0 +1,185 @@
+package Payroll;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class Employees {
+
+    private String name;
+    private String adress;
+    private String birthDate;
+    private int id;
+    private String employeeType;
+    private double salary;
+    private boolean valueSyndicato;
+    private Syndicate syndicate;
+    private PaymentMethod paymentMethod;
+    private LinkedList<String> lastPayments = new LinkedList<>();
+
+    Scanner scan = new Scanner(System.in);
+
+    public Employees() {
+
+    }
+    
+    public Employees(double salary, String name, String adress, String birthyDate, int id, String employeeType, boolean valueSyndicate, PaymentMethod paymentMethod) {
+
+        //  this (salario, nome, endereco, dataNascimento, id, tipoEmp, valueSindicato);
+        this.name = name;
+        this.adress = adress;
+        this.birthDate = birthyDate;
+        this.id = id;
+        this.salary = salary;
+        this.employeeType = employeeType;
+        this.valueSyndicato = valueSyndicate;
+        this.paymentMethod = paymentMethod;
+
+    }
+
+    public LinkedList<String> getLastPayments() {
+        return lastPayments;
+    }
+
+    public void setLastPayments(LinkedList<String> lastPayments) {
+        this.lastPayments = lastPayments;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+    
+    public double getCalcSalario() {
+        if(valueSyndicato){
+            double allValueRate = 0;
+            if(syndicate.serviceRate != null){
+                for(ServiceRate perc : syndicate.serviceRate){
+                allValueRate+=perc.getValueRate();            //percorrendo lista encadeada buscando taxas de serviço
+                }
+            }                    
+            return (salary-((syndicate.getMonthlyRate()*salary)/100)-(allValueRate));            
+        }            
+        return salary;
+    }
+    
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    public void setRateSyndicate() {
+        System.out.println("Qual a taxa sindical que o empregado deverá pagar? (Digite a porcentagem)");
+        double rate = scan.nextDouble();
+        clearBuffer(scan);
+
+        Syndicate syndicate = new Syndicate(rate);
+        this.syndicate = syndicate;
+    }
+    
+    public boolean isValueSyndicato() {
+        return valueSyndicato;
+    }
+
+    public void setValueSyndicato(boolean valueSyndicato) {
+        this.valueSyndicato = valueSyndicato;
+    }
+
+    public Syndicate getSyndicate() {
+        return syndicate;
+    }
+
+    public void setSyndicate(Syndicate syndicate) {
+        this.syndicate = syndicate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getEmployeeType() {
+        return employeeType;
+    }
+
+    public void setEmployeeType(String employeeType) {
+        this.employeeType = employeeType;
+    }
+
+    @Override
+    public String toString() {
+        return "Nome: " + name + "\nid: " + id + "\nEndereço: " + adress + "\nData nasc: " + birthDate;
+    }
+
+    public boolean removerEmpregado(ArrayList<PaymentSchedule> schedule, int id) {
+        for (PaymentSchedule search : schedule) {
+
+            for (Employees emp : search.employees) {
+                if (emp.getId() == id) {
+                    return search.employees.remove(emp);
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean removeEmployee(ArrayList<PaymentSchedule> schedule, Employees employee) {
+        for (PaymentSchedule search : schedule) {
+
+            for (Employees emp : search.employees) {
+                if (emp.getId() == employee.getId() && emp.employeeType == employee.getEmployeeType()) {
+                    return search.employees.remove(emp);
+                }
+            }
+        }
+        return false;
+    }
+
+    public void printarEmpregados() {
+
+    }
+
+    private static void clearBuffer(Scanner scan) {
+        if (scan.hasNextLine()) {
+            scan.nextLine();
+        }
+    }
+}
