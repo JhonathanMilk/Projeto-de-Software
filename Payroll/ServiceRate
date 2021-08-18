@@ -1,0 +1,46 @@
+package Payroll;
+
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+public class ServiceRate {
+    private String name;
+    private String info;
+    private double valueRate;
+
+    public ServiceRate(String name, String info, double valueRate) {
+        this.name = name;
+        this.info = info;
+        this.valueRate = valueRate;
+    }
+    
+    public void displayServiceRate(){
+        System.out.println("Nome: "+this.name+"\nDescrição: "+this.info+"\nValor da taxa: "+this.valueRate+"\n");
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public double getValueRate() {
+        return valueRate;
+    }
+
+    public void setValueRate(double valueRate) {
+        this.valueRate = valueRate;
+    }        
+}
