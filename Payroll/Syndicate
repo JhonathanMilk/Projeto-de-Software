@@ -1,0 +1,112 @@
+package Payroll;
+
+/**
+ *
+ * @author jhonathanmilk
+ */
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Syndicate {
+    private double monthlyRate;
+    ArrayList <ServiceRate> serviceRate = null;
+    private  int employeeIdSyndicate;
+    
+    Scanner scan = new Scanner(System.in);
+    
+    public Syndicate (){
+        
+    }
+    
+    public Syndicate (double rate){       
+      //  this.serviceRate = null;
+        this.employeeIdSyndicate = GenerateId.getNextId();
+        this.monthlyRate = rate;
+    }
+    
+    public double getMonthlyRate() {
+        return monthlyRate;
+    }
+
+    public void setMonthlyRate(double monthlyRate) {
+        this.monthlyRate = monthlyRate;
+    }
+    
+    public double taxaSindicato(double salary) {
+        return salary*monthlyRate;
+    }
+
+    public int getEmployeeIdSyndicate() {
+        return employeeIdSyndicate;
+    }
+
+    public void setEmployeeIdSyndicate(int employeeIdSyndicate) {
+        this.employeeIdSyndicate = employeeIdSyndicate;
+    }
+    
+    public void insertServiceRate (ArrayList <PaymentSchedule> schedule, int idSyndicate){
+         
+        for(PaymentSchedule perc : schedule){
+            for(Employees emp : perc.employees){
+                if(emp.isValueSyndicato()){
+                    if (emp.getSyndicate().getEmployeeIdSyndicate() == idSyndicate){
+                        if(emp.getSyndicate().serviceRate == null){
+                            
+                            ArrayList <ServiceRate> serviceRate = new ArrayList<>();
+                            emp.getSyndicate().serviceRate = serviceRate;
+                            
+                        }
+                        System.out.println("Nome para taxa de serviço:");
+                        String nameServiceRate = scan.nextLine();
+                        
+                        System.out.println("Informação adicional sobre a taxa:");
+                        String infoServiceRate = scan.nextLine();
+                        
+                        System.out.println("Valor da taxa:");
+                        double valueServiceRate = scan.nextDouble();
+                        clearBuffer(scan);
+                        
+                        ServiceRate serviceRateNew = new ServiceRate(nameServiceRate, infoServiceRate, valueServiceRate);
+                        
+                        emp.getSyndicate().serviceRate.add(serviceRateNew);
+                        System.out.println("Taxa adicional submetida com sucesso.\n");
+                        return;
+                    }
+                }
+            }
+        }
+         System.out.println("ID não encontrado no sindicato! Verifique o ID e tente novamente\n");
+    }
+    
+    public void showerServiceRate(ArrayList <PaymentSchedule> schedule, int idSyndicate){
+        for(PaymentSchedule perc : schedule){
+            for(Employees emp : perc.employees){
+                if(emp.isValueSyndicato()){
+                    if (emp.getSyndicate().getEmployeeIdSyndicate() == idSyndicate){
+                        if(emp.getSyndicate().serviceRate == null){
+                            
+                            System.out.println("Empregado não possui taxa de serviços adicionais");
+                            return;
+                        }
+                        
+                        System.out.println("Taxas de serviço adicionais para: "+emp.getName()+"\n");
+                        
+                        for(ServiceRate rate : emp.getSyndicate().serviceRate){
+                            rate.displayServiceRate();
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+        System.out.println("ID não encontrado no sindicato! Verifique o ID e tente novamente\n");
+    }
+    
+    private static void clearBuffer(Scanner scan) {
+        if (scan.hasNextLine()) {
+            scan.nextLine();
+        }
+    } 
+    
+}
