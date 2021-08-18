@@ -1,0 +1,85 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Payroll;
+
+import java.util.Scanner;
+/**
+ *
+ * @author jhonathanmilk
+ */
+
+public class BankAccountDeposit {
+    private String bankName;
+    private int bankCod;
+    private String accountEmployee;
+    
+    Scanner scan = new Scanner(System.in);
+    
+    public BankAccountDeposit(){
+        
+    }
+    
+    public void addBankAccountDate(){
+        System.out.println("Nome do banco:");
+        String bankName = scan.nextLine();
+        System.out.println("Codigo do banco:");
+        int bankCod = scan.nextInt();
+        Main.clearBuffer(scan);
+        System.out.println("Número da conta:");
+        String accountEmployee = scan.nextLine();
+        
+        this.bankName = bankName;
+        this.bankCod = bankCod;
+        this.accountEmployee = accountEmployee;
+    }
+    
+    public static void BankAccountPayment (Employees emp){        
+        
+        double salaryFinal = emp.getCalcSalario();
+        
+        String comprov = "======================================\n"
+                                    + "***Pagamento conta bancária****\n" +
+                                       "\nValor do pagamento: "+salaryFinal+
+                                       "\nNome do beneficiário: "+emp.getName()+
+                                       "\nInstituição: "+emp.getPaymentMethod().getBankAccount().bankCod+" - "
+                                        +emp.getPaymentMethod().getBankAccount().bankName+
+                                       "\nConta: "+emp.getPaymentMethod().getBankAccount().accountEmployee+
+                                       "\nEmpresa Fulana - CNPJ: XX.XXX.XXX/0001-XX\n"
+                                    + "=====================================\n";
+        
+        emp.getLastPayments().addFirst(comprov);
+        
+        System.out.println("Valor de "+salaryFinal+" pago para "+emp.getName()+ "--->"+emp.getPaymentMethod().getPaymentType());
+        
+        if(emp.getEmployeeType().equalsIgnoreCase("assalariado")){
+            
+ //           EmpAssalariado emp2 = (EmpAssalariado)emp;
+            
+        }
+        else if(emp.getEmployeeType().equalsIgnoreCase("comissionado")){
+            EmpCommissioned emp2 = (EmpCommissioned)emp;
+            
+            emp2.setCommission(0);
+        }
+        else if(emp.getEmployeeType().equalsIgnoreCase("horista")){
+     //       EmpHorista emp2 = new EmpHorista();
+            EmpHourly emp2 = (EmpHourly)emp;
+            
+            emp2.setWorkedHours(0);
+            emp2.setExtraHours(0);
+        }
+         emp.setSalary(0);
+         
+        if(emp.isValueSyndicato())             //Limpar serviços adicionais após pagamento
+            emp.getSyndicate().serviceRate = null;    
+    }
+    
+    private static void clearBuffer(Scanner scan) {
+        if (scan.hasNextLine()) {
+            scan.nextLine();
+        }
+    } 
+}
